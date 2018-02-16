@@ -3,7 +3,7 @@ const limit = 5;
 const searchURL = "https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&limit=" + limit + "&format=json&search=";
 const contentURL = 'https://en.wikipedia.org/w/api.php?&origin=*&action=query&prop=revisions&rvprop=content&format=json&titles=';
 
-wiki_fetch('iron man').then((r) => {
+wiki_fetch('javascript').then((r) => {
     console.log(r);
 });
 
