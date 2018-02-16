@@ -1,0 +1,15 @@
+{
+  "name": "wiki-fetch",
+  "version": "1.0.0",
+  "description": "a simple library for accessing wiki api",
+  "main": "wiki-fetch.js",
+  "dependencies": {
+    "node-fetch": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sarang S",
+  "license": "MIT"
+}
