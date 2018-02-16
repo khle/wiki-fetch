@@ -1,25 +1,37 @@
 const limit = 5;
 
-const searchURL = "https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&limit="+limit+"&format=json&search=";
+const searchURL = "https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&limit=" + limit + "&format=json&search=";
 const contentURL = 'https://en.wikipedia.org/w/api.php?&origin=*&action=query&prop=revisions&rvprop=content&format=json&titles=';
 
-wiki_fetch('java')
+wiki_fetch('iron man').then((r) => {
+    console.log(r);
+});
 
 
 async function wiki_fetch(term) {
- const data = await data_fetch(term);
- console.log(data[0]);
- const content = await content_fetch(data[0].title)
-const info =  content.query.pages[Object.keys(content.query.pages)[0]].revisions[0];
-console.log(info);
+    let result = [];
+    const data = await data_fetch(term);
+    for (let i = 0; i < limit; i++) {
+        const content = await content_fetch(data[i].title);
+        const page = content.query.pages;
+        const pageID = Object.keys(page)[0];
+        const info = page[pageID].revisions[0]['*'];
+        result[i] = {
+            title: data[i].title,
+            desc: data[i].desc,
+            webpage: data[i].webpage,
+            content: info 
+        };
+    }
+    
+    return result;
 }
 
 async function data_fetch(term) {
-    try{
-        const url = searchURL+term;
+    try {
+        const url = searchURL + term;
         let resp = await fetch(url);
         let db = await resp.json();
-        //console.log(db);
         let data = [];
         for (let i = 0; i < limit; i++) {
             data.push({
@@ -29,19 +41,18 @@ async function data_fetch(term) {
             });
         }
         return data;
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 }
 
 async function content_fetch(title) {
-    try{
-        const url = contentURL+title;
+    try {
+        const url = contentURL + title;
         let resp = await fetch(url);
         let db = await resp.json();
-        console.log(db);
-
-    }catch(err){
+        return db;
+    } catch (err) {
         console.log(err);
     }
 }
